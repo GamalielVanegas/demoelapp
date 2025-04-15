@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.gammadesv.demoleapp"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.gammadesv.demoleapp"

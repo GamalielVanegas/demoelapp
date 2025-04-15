@@ -1,7 +1,7 @@
 [versions]
 agp = "8.3.2"
-kotlin = "2.0.0"
-composeBom = "2024.05.00"
+kotlin = "2.0.21"
+composeBom = "2025.03.01"
 firebaseBom = "33.12.0"
 coreKtx = "1.16.0"
 lifecycle = "2.8.7"
@@ -44,3 +44,4 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

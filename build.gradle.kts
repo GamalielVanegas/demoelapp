@@ -3,4 +3,6 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.google.services) apply false
+
+    id("org.jetbrains.kotlin.plugin.compose") version libs.versions.kotlin.get()
 }

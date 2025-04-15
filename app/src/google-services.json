@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "240661300546",
+    "project_id": "demoleapp",
+    "storage_bucket": "demoleapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240661300546:android:541830fa436b0660a1f4db",
+        "android_client_info": {
+          "package_name": "com.gammadesv.demoleapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS_qxXU-J-NZVdVFtDXHn1VgoRu7vZwfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

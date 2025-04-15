@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="departments_array">
+        <item>Seleccione</item>
+        <item>San Salvador</item>
+        <item>San Miguel</item>
+        <item>Santa Ana</item>
+    </string-array>
+
+    <string-array name="food_types_array">
+        <item>Seleccione</item>
+        <item>Mexicana</item>
+        <item>Italiana</item>
+        <item>China</item>
+        <item>Cubana</item>
+    </string-array>
+
+    <string-array name="promo_types_array">
+        <item>Seleccione</item>
+        <item>2x1</item>
+        <item>All you can eat</item>
+        <item>Para cumpleañeros</item>
+    </string-array>
+
+    <string-array name="environments_array">
+        <item>Seleccione</item>
+        <item>Familiar</item>
+        <item>Pet friendly</item>
+        <item>Infantil</item>
+        <item>Bar</item>
+    </string-array>
+</resources>

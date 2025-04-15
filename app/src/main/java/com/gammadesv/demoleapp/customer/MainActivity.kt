@@ -3,12 +3,14 @@ package com.gammadesv.demoleapp.customer
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gammadesv.demoleapp.R
 import com.gammadesv.demoleapp.databinding.ActivityMainBinding
 import com.gammadesv.demoleapp.models.SearchFilters
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,75 +18,111 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initializeUI()
+    }
+
+    private fun initializeUI() {
         try {
             setupSpinners()
             setupButtons()
         } catch (e: Exception) {
-            // Manejo de errores básico
-            e.printStackTrace()
-            finish() // Cierra la actividad si hay un error crítico
+            handleInitializationError(e)
         }
     }
 
     private fun setupSpinners() {
-        // Datos para los spinners
-        val departments = resources.getStringArray(R.array.departments_array)
-        val foodTypes = resources.getStringArray(R.array.food_types_array)
-        val promoTypes = resources.getStringArray(R.array.promo_types_array)
-        val environments = resources.getStringArray(R.array.environments_array)
+        with(binding) {
+            spinnerDepartment.adapter = createSpinnerAdapter(R.array.departments_array)
+            spinnerFoodType.adapter = createSpinnerAdapter(R.array.food_types_array)
+            spinnerPromoType.adapter = createSpinnerAdapter(R.array.promo_types_array)
+            spinnerEnvironment.adapter = createSpinnerAdapter(R.array.environments_array)
 
-        // Configuración segura de los adapters
-        binding.spinnerDepartment.adapter = createSpinnerAdapter(departments)
-        binding.spinnerFoodType.adapter = createSpinnerAdapter(foodTypes)
-        binding.spinnerPromoType.adapter = createSpinnerAdapter(promoTypes)
-        binding.spinnerEnvironment.adapter = createSpinnerAdapter(environments)
+            // Establecer selección por defecto
+            arrayOf(spinnerDepartment, spinnerFoodType, spinnerPromoType, spinnerEnvironment)
+                .forEach { it.setSelection(0, false) }
+        }
     }
 
-    private fun createSpinnerAdapter(items: Array<String>): ArrayAdapter<String> {
-        return ArrayAdapter(
+    private fun createSpinnerAdapter(@ArrayRes arrayResId: Int): ArrayAdapter<CharSequence> {
+        return ArrayAdapter.createFromResource(
             this,
-            android.R.layout.simple_spinner_item,
-            items
+            arrayResId,
+            android.R.layout.simple_spinner_item
         ).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
     }
 
     private fun setupButtons() {
-        binding.btnSearch.setOnClickListener {
-            val filters = SearchFilters(
-                department = binding.spinnerDepartment.selectedItem?.toString() ?: "",
-                foodType = binding.spinnerFoodType.selectedItem?.toString() ?: "",
-                promotionType = binding.spinnerPromoType.selectedItem?.toString() ?: "",
-                environment = binding.spinnerEnvironment.selectedItem?.toString() ?: ""
-            )
-
-            if (validateFilters(filters)) {
-                startActivity(
-                    Intent(this, ResultsActivity::class.java).apply {
-                        putExtra("filters", filters)
-                    }
-                )
-            }
+        binding.apply {
+            btnSearch.setOnClickListener { handleSearchClick() }
+            btnRestaurant.setOnClickListener { navigateToRestaurantAuth() }
         }
+    }
 
-        binding.btnRestaurant.setOnClickListener {
-            startActivity(Intent(this, RestaurantAuthActivity::class.java))
+    private fun handleSearchClick() {
+        val filters = createSearchFilters()
+
+        if (validateFilters(filters)) {
+            navigateToResults(filters)
+        } else {
+            showValidationError()
+        }
+    }
+
+    private fun createSearchFilters(): SearchFilters {
+        return with(binding) {
+            SearchFilters(
+                department = spinnerDepartment.selectedItem?.toString().orEmpty(),
+                foodType = spinnerFoodType.selectedItem?.toString().orEmpty(),
+                promotionType = spinnerPromoType.selectedItem?.toString().orEmpty(),
+                environment = spinnerEnvironment.selectedItem?.toString().orEmpty()
+            )
         }
     }
 
     private fun validateFilters(filters: SearchFilters): Boolean {
-        // Validación básica - todos los campos deben tener un valor seleccionado
-        return listOf(
-            filters.department,
-            filters.foodType,
-            filters.promotionType,
-            filters.environment
-        ).none { it == "Seleccione" || it.isEmpty() }
+        return with(filters) {
+            department.isNotEmpty() && department != "Seleccione" &&
+            foodType.isNotEmpty() && foodType != "Seleccione" &&
+            promotionType.isNotEmpty() && promotionType != "Seleccione" &&
+            environment.isNotEmpty() && environment != "Seleccione"
+        }
+    }
+
+    private fun navigateToResults(filters: SearchFilters) {
+        startActivity(
+            Intent(this, ResultsActivity::class.java).apply {
+                putExtra("filters", filters)
+            }
+        )
+    }
+
+    private fun navigateToRestaurantAuth() {
+        startActivity(Intent(this, RestaurantAuthActivity::class.java))
+    }
+
+    private fun showValidationError() {
+        Toast.makeText(
+            this,
+            "Por favor selecciona opciones válidas en todos los filtros",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun handleInitializationError(error: Exception) {
+        error.printStackTrace()
+        Toast.makeText(
+            this,
+            "Error al inicializar la aplicación. Por favor reinicia.",
+            Toast.LENGTH_LONG
+        ).show()
+        finish()
     }
 
     override fun onDestroy() {
-        // Limpieza de recursos si es necesario
+        // Limpieza de recursos
+        binding.root.removeAllViews()
         super.onDestroy()
     }
 }

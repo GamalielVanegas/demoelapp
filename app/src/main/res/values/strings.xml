@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">demoleapp</string>
+    <string name="select_option">Seleccione</string>
+    <string name="validation_error">Por favor selecciona opciones válidas en todos los filtros</string>
+    <string name="init_error">Error al inicializar la aplicación. Por favor reinicia.</string>
 </resources>

@@ -1,32 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- String compartido para la opción por defecto -->
+    <string name="default_select_option">Seleccione</string>
+    <string name="department_label">Departamento</string>
+    <string name="food_type_label">Tipo de comida</string>
+    <string name="promo_type_label">Tipo de promoción</string>
+    <string name="environment_label">Ambiente</string>
+
+    <!-- Arrays para los spinners -->
     <string-array name="departments_array">
-        <item>Seleccione</item>
+        <item>@string/default_select_option</item>
         <item>San Salvador</item>
         <item>San Miguel</item>
         <item>Santa Ana</item>
+        <item>La Libertad</item> <!-- Añadido para mayor cobertura -->
     </string-array>
 
     <string-array name="food_types_array">
-        <item>Seleccione</item>
+        <item>@string/default_select_option</item>
         <item>Mexicana</item>
         <item>Italiana</item>
         <item>China</item>
         <item>Cubana</item>
+        <item>Americana</item> <!-- Opción adicional -->
+        <item>Mariscos</item> <!-- Opción adicional -->
     </string-array>
 
     <string-array name="promo_types_array">
-        <item>Seleccione</item>
+        <item>@string/default_select_option</item>
         <item>2x1</item>
         <item>All you can eat</item>
         <item>Para cumpleañeros</item>
+        <item>Happy Hour</item> <!-- Opción adicional -->
+        <item>Descuento especial</item> <!-- Opción adicional -->
     </string-array>
 
     <string-array name="environments_array">
-        <item>Seleccione</item>
+        <item>@string/default_select_option</item>
         <item>Familiar</item>
         <item>Pet friendly</item>
         <item>Infantil</item>
         <item>Bar</item>
+        <item>Romántico</item> <!-- Opción adicional -->
+        <item>Temático</item> <!-- Opción adicional -->
+    </string-array>
+
+    <!-- Versiones cortas para visualización en resultados -->
+    <string-array name="promo_types_short_array">
+        <item>2x1</item>
+        <item>AYCE</item> <!-- All you can eat abreviado -->
+        <item>Cumple</item> <!-- Para cumpleañeros abreviado -->
+        <item>HH</item> <!-- Happy Hour abreviado -->
+        <item>Desc%</item> <!-- Descuento especial abreviado -->
     </string-array>
 </resources>

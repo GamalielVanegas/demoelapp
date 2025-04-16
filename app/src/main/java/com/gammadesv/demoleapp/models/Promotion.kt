@@ -8,6 +8,9 @@ data class Promotion(
     val days: String = "",
     val hours: String = "",
     val price: String = "",
+    val department: String = "",
+    val foodType: String = "",
+    val environment: String = "",
     val createdAt: Long = 0L
 ) {
     // Optional: You can add a secondary constructor if needed

@@ -1,8 +1,12 @@
 package com.gammadesv.demoleapp.restaurant
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.gammadesv.demoleapp.R
 import com.gammadesv.demoleapp.databinding.ActivityCreatePromotionBinding
 import com.gammadesv.demoleapp.models.Promotion
 import com.google.firebase.auth.FirebaseAuth
@@ -14,6 +18,12 @@ class CreatePromotionActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
+    // Variables para guardar selecciones
+    private var selectedDepartment: String = ""
+    private var selectedFoodType: String = ""
+    private var selectedPromotionType: String = ""
+    private var selectedEnvironment: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePromotionBinding.inflate(layoutInflater)
@@ -22,19 +32,97 @@ class CreatePromotionActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        setupSpinners()
         binding.btnSavePromo.setOnClickListener { savePromotion() }
     }
 
-    private fun savePromotion() {
-        val restaurantId = auth.currentUser?.uid ?: return
-        val promotionType = binding.etPromoType.text.toString()
-        val days = binding.etDays.text.toString()
-        val hours = binding.etHours.text.toString()
-        val price = binding.etPrice.text.toString()
-        val title = binding.etTitle.text.toString()
+    private fun setupSpinners() {
+        // Configuración Spinner de Departamento
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.departments_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerDepartment.adapter = adapter
+            binding.spinnerDepartment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedDepartment = parent?.getItemAtPosition(position).toString()
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+        }
 
-        if (promotionType.isEmpty() || title.isEmpty()) {
-            Toast.makeText(this, "Tipo y título son requeridos", Toast.LENGTH_SHORT).show()
+        // Configuración Spinner de Tipo de Comida
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.food_types_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerFoodType.adapter = adapter
+            binding.spinnerFoodType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedFoodType = parent?.getItemAtPosition(position).toString()
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+        }
+
+        // Configuración Spinner de Tipo de Promoción
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.promotion_types_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerPromoType.adapter = adapter
+            binding.spinnerPromoType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedPromotionType = parent?.getItemAtPosition(position).toString()
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+        }
+
+        // Configuración Spinner de Ambiente
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.environments_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerEnvironment.adapter = adapter
+            binding.spinnerEnvironment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedEnvironment = parent?.getItemAtPosition(position).toString()
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+        }
+    }
+
+    private fun savePromotion() {
+        val restaurantId = auth.currentUser?.uid ?: run {
+            Toast.makeText(this, "Error: Usuario no autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val title = binding.etTitle.text.toString().trim()
+        val days = binding.etDays.text.toString().trim()
+        val hours = binding.etHours.text.toString().trim()
+        val price = binding.etPrice.text.toString().trim()
+
+        // Validar campos requeridos
+        if (title.isEmpty() || selectedPromotionType == getString(R.string.default_select_option)) {
+            Toast.makeText(this, "Título y tipo de promoción son requeridos", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (selectedDepartment == getString(R.string.default_select_option) ||
+            selectedFoodType == getString(R.string.default_select_option) ||
+            selectedEnvironment == getString(R.string.default_select_option)) {
+            Toast.makeText(this, "Por favor seleccione todas las opciones", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -42,7 +130,10 @@ class CreatePromotionActivity : AppCompatActivity() {
             id = UUID.randomUUID().toString(),
             restaurantId = restaurantId,
             title = title,
-            promotionType = promotionType,
+            promotionType = selectedPromotionType,
+            department = selectedDepartment,
+            foodType = selectedFoodType,
+            environment = selectedEnvironment,
             days = days,
             hours = hours,
             price = price,
@@ -51,11 +142,11 @@ class CreatePromotionActivity : AppCompatActivity() {
 
         db.collection("promotions").add(promotion)
             .addOnSuccessListener {
-                Toast.makeText(this, "Promoción creada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Promoción creada exitosamente", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al crear promoción: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
     }
 }

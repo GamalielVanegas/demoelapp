@@ -14,6 +14,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.widget.Toast
 import com.google.firebase.firestore.Query
+import com.gammadesv.demoleapp.R
 
 class ResultsActivity : AppCompatActivity() {
 
@@ -40,16 +41,20 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     private fun buildSelectionTitle(): String {
-        return listOf(
-            filters.department.takeIf { it != "Seleccione" }?.let { "En $it" },
-            filters.foodType.takeIf { it != "Seleccione" }?.let { "comida $it" },
-            filters.promotionType.takeIf { it != "Seleccione" },
-            filters.environment.takeIf { it != "Seleccione" }
-        )
-            .filterNotNull()
-            .joinToString(", ")
-            .takeIf { it.isNotEmpty() }
-            ?.let { "Tu selección: $it" } ?: "Todos los restaurantes"
+        val selectedFilters = listOf(
+            filters.department.takeIf { it != getString(R.string.default_select_option) }
+                ?.let { getString(R.string.location_prefix, it) },
+            filters.foodType.takeIf { it != getString(R.string.default_select_option) }
+                ?.let { getString(R.string.food_type_prefix, it) },
+            filters.promotionType.takeIf { it != getString(R.string.default_select_option) },
+            filters.environment.takeIf { it != getString(R.string.default_select_option) }
+        ).filterNotNull()
+
+        return if (selectedFilters.isNotEmpty()) {
+            getString(R.string.your_selection, selectedFilters.joinToString(", "))
+        } else {
+            getString(R.string.all_restaurants)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -79,16 +84,20 @@ class ResultsActivity : AppCompatActivity() {
         var query: Query = db.collection("restaurants")
 
         with(filters) {
-            if (department != "Seleccione") query = query.whereEqualTo("department", department)
-            if (foodType != "Seleccione") query = query.whereEqualTo("foodType", foodType)
-            if (promotionType != "Seleccione") query = query.whereEqualTo("promotionType", promotionType)
-            if (environment != "Seleccione") query = query.whereEqualTo("environment", environment)
+            val defaultOption = getString(R.string.default_select_option)
+            if (department != defaultOption) query = query.whereEqualTo("department", department)
+            if (foodType != defaultOption) query = query.whereEqualTo("foodType", foodType)
+            if (promotionType != defaultOption) query = query.whereEqualTo("promotionType", promotionType)
+            if (environment != defaultOption) query = query.whereEqualTo("environment", environment)
         }
 
         query.get()
             .addOnSuccessListener { documents ->
                 val restaurants = documents.toObjects(Restaurant::class.java)
                 adapter.submitList(restaurants)
+                if (restaurants.isEmpty()) {
+                    Toast.makeText(this, "No se encontraron restaurantes con esos filtros", Toast.LENGTH_SHORT).show()
+                }
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error al cargar restaurantes: ${exception.message}", Toast.LENGTH_SHORT).show()

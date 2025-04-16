@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- String compartido para la opción por defecto -->
-    <string name="default_select_option">Seleccione</string>
-    <string name="department_label">Departamento</string>
-    <string name="food_type_label">Tipo de comida</string>
-    <string name="promo_type_label">Tipo de promoción</string>
-    <string name="environment_label">Ambiente</string>
-
     <!-- Arrays para los spinners -->
     <string-array name="departments_array">
         <item>@string/default_select_option</item>
         <item>San Salvador</item>
         <item>San Miguel</item>
         <item>Santa Ana</item>
-        <item>La Libertad</item> <!-- Añadido para mayor cobertura -->
+        <item>La Libertad</item>
+        <item>Sonsonate</item>
+        <item>Ahuachapán</item>
     </string-array>
 
     <string-array name="food_types_array">
@@ -22,17 +17,21 @@
         <item>Italiana</item>
         <item>China</item>
         <item>Cubana</item>
-        <item>Americana</item> <!-- Opción adicional -->
-        <item>Mariscos</item> <!-- Opción adicional -->
+        <item>Americana</item>
+        <item>Mariscos</item>
+        <item>Vegetariana</item>
+        <item>Vegana</item>
     </string-array>
 
-    <string-array name="promo_types_array">
+    <string-array name="promotion_types_array">
         <item>@string/default_select_option</item>
         <item>2x1</item>
         <item>All you can eat</item>
         <item>Para cumpleañeros</item>
-        <item>Happy Hour</item> <!-- Opción adicional -->
-        <item>Descuento especial</item> <!-- Opción adicional -->
+        <item>Happy Hour</item>
+        <item>Descuento especial</item>
+        <item>Menú ejecutivo</item>
+        <item>Promo familiar</item>
     </string-array>
 
     <string-array name="environments_array">
@@ -41,16 +40,20 @@
         <item>Pet friendly</item>
         <item>Infantil</item>
         <item>Bar</item>
-        <item>Romántico</item> <!-- Opción adicional -->
-        <item>Temático</item> <!-- Opción adicional -->
+        <item>Romántico</item>
+        <item>Temático</item>
+        <item>Al aire libre</item>
+        <item>Lujo</item>
     </string-array>
 
     <!-- Versiones cortas para visualización en resultados -->
     <string-array name="promo_types_short_array">
         <item>2x1</item>
-        <item>AYCE</item> <!-- All you can eat abreviado -->
-        <item>Cumple</item> <!-- Para cumpleañeros abreviado -->
-        <item>HH</item> <!-- Happy Hour abreviado -->
-        <item>Desc%</item> <!-- Descuento especial abreviado -->
+        <item>AYCE</item>
+        <item>Cumple</item>
+        <item>HH</item>
+        <item>Desc%</item>
+        <item>Menú</item>
+        <item>Familia</item>
     </string-array>
 </resources>

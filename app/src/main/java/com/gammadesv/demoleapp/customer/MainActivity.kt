@@ -28,13 +28,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        listOf(
-            binding.spinnerDepartment to R.array.departments_array,
-            binding.spinnerFoodType to R.array.food_types_array,
-            binding.spinnerPromoType to R.array.promo_types_array,
-            binding.spinnerEnvironment to R.array.environments_array
-        ).forEach { (spinner, arrayRes) ->
+        // Configuración mejorada con tripletas (spinner, arrayRes, label)
+        val spinnerConfigs = listOf(
+            Triple(binding.spinnerDepartment, R.array.departments_array, getString(R.string.department_label)),
+            Triple(binding.spinnerFoodType, R.array.food_types_array, getString(R.string.food_type_label)),
+            Triple(binding.spinnerPromoType, R.array.promotion_types_array, getString(R.string.promo_type_label)),
+            Triple(binding.spinnerEnvironment, R.array.environments_array, getString(R.string.environment_label))
+        )
+
+        spinnerConfigs.forEach { (spinner, arrayRes, label) ->
+            // Configurar el adaptador
             spinner.adapter = createSpinnerAdapter(arrayRes)
+
+            // Establecer el prompt (título cuando se abre el spinner)
+            spinner.prompt = label
+
+            // Seleccionar "Seleccione" por defecto
             spinner.setSelection(0, false)
         }
     }
@@ -64,15 +73,19 @@ class MainActivity : AppCompatActivity() {
             environment = binding.spinnerEnvironment.selectedItem.toString()
         )
 
-        if (filters.isValid()) {
+        if (filters.isValid(this)) {
             navigateToResults(filters)
         } else {
-            Toast.makeText(
-                this,
-                "Selecciona opciones válidas en todos los filtros",
-                Toast.LENGTH_LONG
-            ).show()
+            showValidationError()
         }
+    }
+
+    private fun showValidationError() {
+        Toast.makeText(
+            this,
+            getString(R.string.validation_error),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun navigateToResults(filters: SearchFilters) {
@@ -83,9 +96,9 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// Extensión para validación
-fun SearchFilters.isValid(): Boolean {
+// Extensión para validación (usando el string correcto)
+fun SearchFilters.isValid(context: android.content.Context): Boolean {
     return listOf(department, foodType, promotionType, environment).all {
-        it != "Seleccione" && it.isNotEmpty()
+        it != context.getString(R.string.default_select_option) && it.isNotEmpty()
     }
 }

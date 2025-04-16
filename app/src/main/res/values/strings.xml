@@ -1,6 +1,29 @@
 <resources>
-    <string name="app_name">DemoleApp</string> <!-- Añade esta línea -->
-    <string name="select_option">Seleccione</string>
+    <string name="app_name">DemoleApp</string>
+    <string name="default_select_option">Seleccione</string>
     <string name="validation_error">Por favor selecciona opciones válidas en todos los filtros</string>
     <string name="init_error">Error al inicializar la aplicación. Por favor reinicia.</string>
+    <string name="all_restaurants">Todos los restaurantes</string>
+    <string name="your_selection">Tu selección: %s</string>
+    <string name="location_prefix">En %s</string>
+    <string name="food_type_prefix">comida %s</string>
+
+    <!-- Strings para creación de promoción -->
+    <string name="create_promotion_title">CREAR PROMOCIÓN</string>
+    <string name="promotion_title_hint">Título de la promoción</string>
+    <string name="promotion_type_hint">Tipo de promoción</string>
+    <string name="department_hint">Departamento</string>
+    <string name="food_type_hint">Tipo de comida</string>
+    <string name="environment_hint">Ambiente</string>
+    <string name="days_hint">Días válidos (ej. Lunes a Viernes)</string>
+    <string name="hours_hint">Horario (ej. 12:00 - 15:00)</string>
+    <string name="price_hint">Precio</string>
+    <string name="save_promotion_button">GUARDAR PROMOCIÓN</string>
+    <!-- Nuevos strings requeridos por activity_main.xml -->
+    <string name="department_label">Departamento</string>
+    <string name="food_type_label">Tipo de comida</string>
+    <string name="promo_type_label">Tipo de promoción</string>
+    <string name="environment_label">Ambiente</string>
+
+
 </resources>

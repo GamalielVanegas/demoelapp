@@ -1,63 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
 
+        <!-- Título -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CREAR PROMOCIÓN"
+            android:text="@string/create_promotion_title"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"/>
 
-        <EditText
-            android:id="@+id/etTitle"
+        <!-- Título de la promoción -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Título de la promoción"/>
+            android:hint="@string/promotion_title_hint"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/etPromoType"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Departamento -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/department_hint"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:drawable/spinner_background"
+            android:prompt="@string/department_hint"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Tipo de comida -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/food_type_hint"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerFoodType"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:drawable/spinner_background"
+            android:prompt="@string/food_type_hint"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Tipo de promoción -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/promotion_type_hint"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerPromoType"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:drawable/spinner_background"
+            android:prompt="@string/promotion_type_hint"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Ambiente -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/environment_hint"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerEnvironment"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:drawable/spinner_background"
+            android:prompt="@string/environment_hint"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Días válidos -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Tipo de promoción (ej. 2x1)"/>
+            android:hint="@string/days_hint"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/etDays"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Horario -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Días válidos (ej. Lunes a Viernes)"/>
+            android:hint="@string/hours_hint"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/etHours"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Precio -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Horario (ej. 12:00 - 15:00)"/>
+            android:hint="@string/price_hint"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="24dp">
 
-        <EditText
-            android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Precio (opcional)"
-            android:inputType="numberDecimal"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Botón Guardar -->
         <Button
             android:id="@+id/btnSavePromo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Guardar promoción"/>
+            android:layout_height="48dp"
+            android:text="@string/save_promotion_button"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@color/white"
+            android:elevation="4dp"/>
     </LinearLayout>
 </ScrollView>

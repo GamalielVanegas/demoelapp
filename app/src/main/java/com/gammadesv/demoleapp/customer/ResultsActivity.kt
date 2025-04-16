@@ -62,8 +62,9 @@ class ResultsActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = PromotionAdapter(
-            onEditClick = { promotion -> /* Manejar edición si es necesario */ },
-            onDeleteClick = { promotion -> /* Manejar eliminación si es necesario */ }
+            onEditClick = { /* No action for normal users */ },
+            onDeleteClick = { /* No action for normal users */ },
+            showAdminActions = false // Aquí desactivamos los botones para usuarios normales
         )
 
         binding.rvResults.apply {

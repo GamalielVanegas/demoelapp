@@ -38,12 +38,14 @@ class PromotionsListActivity : AppCompatActivity() {
             },
             onDeleteClick = { promotion ->
                 deletePromotion(promotion.id)
-            }
+            },
+            showAdminActions = true // ESTA ES LA CLAVE PARA MOSTRAR LOS BOTONES
         )
 
         with(binding) {
             recyclerViewPromotions.layoutManager = LinearLayoutManager(this@PromotionsListActivity)
             recyclerViewPromotions.adapter = adapter
+            recyclerViewPromotions.setHasFixedSize(true)
         }
     }
 

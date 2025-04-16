@@ -11,26 +11,26 @@ import com.gammadesv.demoleapp.R
 import com.gammadesv.demoleapp.models.Promotion
 
 class PromotionAdapter(
-    private val onEditClick: (Promotion) -> Unit,
-    private val onDeleteClick: (Promotion) -> Unit,
-    private val isAdmin: Boolean = false
+    private val onEditClick: (Promotion) -> Unit = {},
+    private val onDeleteClick: (Promotion) -> Unit = {},
+    private val showAdminActions: Boolean = false
 ) : ListAdapter<Promotion, PromotionAdapter.PromotionViewHolder>(PromotionDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PromotionViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_promotion, parent, false)
-        return PromotionViewHolder(view, onEditClick, onDeleteClick, isAdmin)
+        return PromotionViewHolder(view, onEditClick, onDeleteClick, showAdminActions)
     }
 
     override fun onBindViewHolder(holder: PromotionViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class PromotionViewHolder(
+    inner class PromotionViewHolder(
         itemView: View,
         private val onEditClick: (Promotion) -> Unit,
         private val onDeleteClick: (Promotion) -> Unit,
-        private val isAdmin: Boolean
+        private val showAdminActions: Boolean
     ) : RecyclerView.ViewHolder(itemView) {
         private val tvRestaurantName: TextView = itemView.findViewById(R.id.tvRestaurantName)
         private val tvPromoType: TextView = itemView.findViewById(R.id.tvPromoType)
@@ -41,7 +41,6 @@ class PromotionAdapter(
         private val adminActions: View = itemView.findViewById(R.id.adminActions)
 
         fun bind(promotion: Promotion) {
-            // Set formatted promotion data
             tvRestaurantName.text = promotion.title
             tvPromoType.text = promotion.promotionType
             tvFoodType.text = promotion.foodType.toLowerCase().capitalize()
@@ -49,15 +48,14 @@ class PromotionAdapter(
             tvPromoPrice.text = "$${promotion.price}"
             tvLocation.text = "En ${promotion.department}"
 
-            // Control admin actions visibility
-            adminActions.visibility = if (isAdmin) View.VISIBLE else View.GONE
+            adminActions.visibility = if (showAdminActions) View.VISIBLE else View.GONE
 
-            // Set click listeners
             itemView.findViewById<View>(R.id.btnEdit).setOnClickListener {
-                onEditClick(promotion)
+                if (showAdminActions) onEditClick(promotion)
             }
+
             itemView.findViewById<View>(R.id.btnDelete).setOnClickListener {
-                onDeleteClick(promotion)
+                if (showAdminActions) onDeleteClick(promotion)
             }
         }
     }

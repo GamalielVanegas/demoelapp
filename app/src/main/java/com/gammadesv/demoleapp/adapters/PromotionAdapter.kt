@@ -32,29 +32,33 @@ class PromotionAdapter(
         private val onDeleteClick: (Promotion) -> Unit,
         private val isAdmin: Boolean
     ) : RecyclerView.ViewHolder(itemView) {
-        private val tvTitle: TextView = itemView.findViewById(R.id.tvPromoTitle)
-        private val tvType: TextView = itemView.findViewById(R.id.tvPromoType)
+        private val tvRestaurantName: TextView = itemView.findViewById(R.id.tvRestaurantName)
+        private val tvPromoType: TextView = itemView.findViewById(R.id.tvPromoType)
         private val tvFoodType: TextView = itemView.findViewById(R.id.tvFoodType)
-        private val tvSchedule: TextView = itemView.findViewById(R.id.tvPromoSchedule)
-        private val tvPrice: TextView = itemView.findViewById(R.id.tvPromoPrice)
+        private val tvPromoSchedule: TextView = itemView.findViewById(R.id.tvPromoSchedule)
+        private val tvPromoPrice: TextView = itemView.findViewById(R.id.tvPromoPrice)
         private val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
-        private val btnEdit: View = itemView.findViewById(R.id.btnEdit)
-        private val btnDelete: View = itemView.findViewById(R.id.btnDelete)
+        private val adminActions: View = itemView.findViewById(R.id.adminActions)
 
         fun bind(promotion: Promotion) {
-            tvTitle.text = promotion.title
-            tvType.text = promotion.promotionType
-            tvFoodType.text = itemView.context.getString(R.string.food_type_prefix, promotion.foodType)
-            tvSchedule.text = itemView.context.getString(R.string.promo_schedule_format, promotion.days, promotion.hours)
-            tvPrice.text = itemView.context.getString(R.string.promo_price_format, promotion.price)
-            tvLocation.text = itemView.context.getString(R.string.location_prefix, promotion.department)
+            // Set formatted promotion data
+            tvRestaurantName.text = promotion.title
+            tvPromoType.text = promotion.promotionType
+            tvFoodType.text = promotion.foodType.toLowerCase().capitalize()
+            tvPromoSchedule.text = "${promotion.days}, ${promotion.hours}"
+            tvPromoPrice.text = "$${promotion.price}"
+            tvLocation.text = "En ${promotion.department}"
 
-            // Set button visibility based on admin status
-            btnEdit.visibility = if (isAdmin) View.VISIBLE else View.GONE
-            btnDelete.visibility = if (isAdmin) View.VISIBLE else View.GONE
+            // Control admin actions visibility
+            adminActions.visibility = if (isAdmin) View.VISIBLE else View.GONE
 
-            btnEdit.setOnClickListener { onEditClick(promotion) }
-            btnDelete.setOnClickListener { onDeleteClick(promotion) }
+            // Set click listeners
+            itemView.findViewById<View>(R.id.btnEdit).setOnClickListener {
+                onEditClick(promotion)
+            }
+            itemView.findViewById<View>(R.id.btnDelete).setOnClickListener {
+                onDeleteClick(promotion)
+            }
         }
     }
 }

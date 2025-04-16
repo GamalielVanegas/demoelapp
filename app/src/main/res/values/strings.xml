@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">DemoleApp</string>
     <string name="default_select_option">Seleccione</string>
-    <string name="validation_error">Por favor selecciona opciones válidas en todos los filtros</string>
+    <string name="validation_error">Por favor selecciona al menos un filtro</string>
     <string name="init_error">Error al inicializar la aplicación. Por favor reinicia.</string>
     <string name="all_restaurants">Todos los restaurantes</string>
     <string name="your_selection">Tu selección: %s</string>
@@ -26,6 +26,4 @@
     <string name="environment_label">Ambiente</string>
     <string name="promo_schedule_format">%1$s, %2$s</string>
     <string name="promo_price_format">$%1$s</string>
-
-
 </resources>

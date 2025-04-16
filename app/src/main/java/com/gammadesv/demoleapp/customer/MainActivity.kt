@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        // Configuración mejorada con tripletas (spinner, arrayRes, label)
         val spinnerConfigs = listOf(
             Triple(binding.spinnerDepartment, R.array.departments_array, getString(R.string.department_label)),
             Triple(binding.spinnerFoodType, R.array.food_types_array, getString(R.string.food_type_label)),
@@ -37,13 +36,8 @@ class MainActivity : AppCompatActivity() {
         )
 
         spinnerConfigs.forEach { (spinner, arrayRes, label) ->
-            // Configurar el adaptador
             spinner.adapter = createSpinnerAdapter(arrayRes)
-
-            // Establecer el prompt (título cuando se abre el spinner)
             spinner.prompt = label
-
-            // Seleccionar "Seleccione" por defecto
             spinner.setSelection(0, false)
         }
     }
@@ -67,13 +61,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleSearch() {
         val filters = SearchFilters(
-            department = binding.spinnerDepartment.selectedItem.toString(),
-            foodType = binding.spinnerFoodType.selectedItem.toString(),
-            promotionType = binding.spinnerPromoType.selectedItem.toString(),
-            environment = binding.spinnerEnvironment.selectedItem.toString()
+            department = binding.spinnerDepartment.selectedItem?.toString() ?: "",
+            foodType = binding.spinnerFoodType.selectedItem?.toString() ?: "",
+            promotionType = binding.spinnerPromoType.selectedItem?.toString() ?: "",
+            environment = binding.spinnerEnvironment.selectedItem?.toString() ?: ""
         )
 
-        if (filters.isValid(this)) {
+        if (filters.hasAtLeastOneFilter(this)) {
             navigateToResults(filters)
         } else {
             showValidationError()
@@ -83,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     private fun showValidationError() {
         Toast.makeText(
             this,
-            getString(R.string.validation_error),
+            "Selecciona al menos un filtro para buscar",
             Toast.LENGTH_LONG
         ).show()
     }
@@ -96,9 +90,11 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// Extensión para validación (usando el string correcto)
-fun SearchFilters.isValid(context: android.content.Context): Boolean {
-    return listOf(department, foodType, promotionType, environment).all {
-        it != context.getString(R.string.default_select_option) && it.isNotEmpty()
-    }
+// Nueva extensión para validar al menos un filtro
+fun SearchFilters.hasAtLeastOneFilter(context: android.content.Context): Boolean {
+    val defaultOption = context.getString(R.string.default_select_option)
+    return department != defaultOption ||
+            foodType != defaultOption ||
+            promotionType != defaultOption ||
+            environment != defaultOption
 }

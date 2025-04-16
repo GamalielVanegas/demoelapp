@@ -53,5 +53,10 @@
             </intent-filter>
         </activity>
 
+        <!-- ✅ Actividad agregada para mostrar resultados del cliente -->
+        <activity
+            android:name=".customer.ResultsActivity"
+            android:exported="false" />
+
     </application>
 </manifest>

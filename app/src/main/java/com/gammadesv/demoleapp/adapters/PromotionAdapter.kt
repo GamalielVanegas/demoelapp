@@ -12,13 +12,14 @@ import com.gammadesv.demoleapp.models.Promotion
 
 class PromotionAdapter(
     private val onEditClick: (Promotion) -> Unit,
-    private val onDeleteClick: (Promotion) -> Unit
+    private val onDeleteClick: (Promotion) -> Unit,
+    private val isAdmin: Boolean = false
 ) : ListAdapter<Promotion, PromotionAdapter.PromotionViewHolder>(PromotionDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PromotionViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_promotion, parent, false)
-        return PromotionViewHolder(view, onEditClick, onDeleteClick)
+        return PromotionViewHolder(view, onEditClick, onDeleteClick, isAdmin)
     }
 
     override fun onBindViewHolder(holder: PromotionViewHolder, position: Int) {
@@ -28,7 +29,8 @@ class PromotionAdapter(
     class PromotionViewHolder(
         itemView: View,
         private val onEditClick: (Promotion) -> Unit,
-        private val onDeleteClick: (Promotion) -> Unit
+        private val onDeleteClick: (Promotion) -> Unit,
+        private val isAdmin: Boolean
     ) : RecyclerView.ViewHolder(itemView) {
         private val tvTitle: TextView = itemView.findViewById(R.id.tvPromoTitle)
         private val tvType: TextView = itemView.findViewById(R.id.tvPromoType)
@@ -36,6 +38,8 @@ class PromotionAdapter(
         private val tvSchedule: TextView = itemView.findViewById(R.id.tvPromoSchedule)
         private val tvPrice: TextView = itemView.findViewById(R.id.tvPromoPrice)
         private val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
+        private val btnEdit: View = itemView.findViewById(R.id.btnEdit)
+        private val btnDelete: View = itemView.findViewById(R.id.btnDelete)
 
         fun bind(promotion: Promotion) {
             tvTitle.text = promotion.title
@@ -45,13 +49,12 @@ class PromotionAdapter(
             tvPrice.text = itemView.context.getString(R.string.promo_price_format, promotion.price)
             tvLocation.text = itemView.context.getString(R.string.location_prefix, promotion.department)
 
-            itemView.findViewById<View>(R.id.btnEdit).setOnClickListener {
-                onEditClick(promotion)
-            }
+            // Set button visibility based on admin status
+            btnEdit.visibility = if (isAdmin) View.VISIBLE else View.GONE
+            btnDelete.visibility = if (isAdmin) View.VISIBLE else View.GONE
 
-            itemView.findViewById<View>(R.id.btnDelete).setOnClickListener {
-                onDeleteClick(promotion)
-            }
+            btnEdit.setOnClickListener { onEditClick(promotion) }
+            btnDelete.setOnClickListener { onDeleteClick(promotion) }
         }
     }
 }

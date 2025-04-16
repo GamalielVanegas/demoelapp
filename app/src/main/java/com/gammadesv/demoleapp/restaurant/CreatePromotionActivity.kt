@@ -7,6 +7,7 @@ import com.gammadesv.demoleapp.databinding.ActivityCreatePromotionBinding
 import com.gammadesv.demoleapp.models.Promotion
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.UUID
 
 class CreatePromotionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePromotionBinding
@@ -38,12 +39,14 @@ class CreatePromotionActivity : AppCompatActivity() {
         }
 
         val promotion = Promotion(
+            id = UUID.randomUUID().toString(),
             restaurantId = restaurantId,
+            title = title,
             promotionType = promotionType,
             days = days,
             hours = hours,
             price = price,
-            title = title
+            createdAt = System.currentTimeMillis()
         )
 
         db.collection("promotions").add(promotion)

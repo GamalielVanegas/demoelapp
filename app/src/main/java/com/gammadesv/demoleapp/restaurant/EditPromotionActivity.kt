@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gammadesv.demoleapp.databinding.ActivityEditPromotionBinding
+import com.gammadesv.demoleapp.models.Promotion
 import com.google.firebase.firestore.FirebaseFirestore
 
 class EditPromotionActivity : AppCompatActivity() {
@@ -34,49 +35,55 @@ class EditPromotionActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 val promotion = document.toObject(Promotion::class.java)
                 promotion?.let {
-                    binding.etTitle.setText(it.title)
-                    binding.etPromoType.setText(it.promotionType)
-                    binding.etDays.setText(it.days)
-                    binding.etHours.setText(it.hours)
-                    binding.etPrice.setText(it.price)
+                    with(binding) {
+                        editTextTitle.setText(it.title)
+                        editTextPromoType.setText(it.promotionType)
+                        editTextDays.setText(it.days)
+                        editTextHours.setText(it.hours)
+                        editTextPrice.setText(it.price)
+                    }
                 }
             }
     }
 
     private fun setupButtons() {
-        binding.btnUpdate.setOnClickListener { updatePromotion() }
-        binding.btnDelete.setOnClickListener { deletePromotion() }
+        with(binding) {
+            buttonUpdate.setOnClickListener { updatePromotion() }
+            buttonDelete.setOnClickListener { deletePromotion() }
+        }
     }
 
     private fun updatePromotion() {
-        val title = binding.etTitle.text.toString()
-        val type = binding.etPromoType.text.toString()
-        val days = binding.etDays.text.toString()
-        val hours = binding.etHours.text.toString()
-        val price = binding.etPrice.text.toString()
+        with(binding) {
+            val title = editTextTitle.text.toString()
+            val type = editTextPromoType.text.toString()
+            val days = editTextDays.text.toString()
+            val hours = editTextHours.text.toString()
+            val price = editTextPrice.text.toString()
 
-        if (title.isEmpty() || type.isEmpty()) {
-            Toast.makeText(this, "Título y tipo son requeridos", Toast.LENGTH_SHORT).show()
-            return
+            if (title.isEmpty() || type.isEmpty()) {
+                Toast.makeText(this@EditPromotionActivity, "Título y tipo son requeridos", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val updates = mapOf(
+                "title" to title,
+                "promotionType" to type,
+                "days" to days,
+                "hours" to hours,
+                "price" to price
+            )
+
+            db.collection("promotions").document(promotionId)
+                .update(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(this@EditPromotionActivity, "Promoción actualizada", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this@EditPromotionActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
-
-        val updates = mapOf(
-            "title" to title,
-            "promotionType" to type,
-            "days" to days,
-            "hours" to hours,
-            "price" to price
-        )
-
-        db.collection("promotions").document(promotionId)
-            .update(updates)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Promoción actualizada", Toast.LENGTH_SHORT).show()
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     private fun deletePromotion() {

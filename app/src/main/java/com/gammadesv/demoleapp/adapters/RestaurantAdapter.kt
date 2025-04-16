@@ -1,13 +1,11 @@
 package com.gammadesv.demoleapp.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.gammadesv.demoleapp.R
+import com.gammadesv.demoleapp.databinding.ItemRestaurantBinding
 import com.gammadesv.demoleapp.models.Restaurant
 
 class RestaurantAdapter(
@@ -15,9 +13,12 @@ class RestaurantAdapter(
 ) : ListAdapter<Restaurant, RestaurantAdapter.RestaurantViewHolder>(RestaurantDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_restaurant, parent, false)
-        return RestaurantViewHolder(view, onItemClick)
+        val binding = ItemRestaurantBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return RestaurantViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
@@ -25,22 +26,19 @@ class RestaurantAdapter(
     }
 
     class RestaurantViewHolder(
-        itemView: View,
+        private val binding: ItemRestaurantBinding,
         private val onItemClick: (Restaurant) -> Unit
-    ) : RecyclerView.ViewHolder(itemView) {
-        private val tvName: TextView = itemView.findViewById(R.id.tvRestaurantName)
-        private val tvPromo: TextView = itemView.findViewById(R.id.tvPromotion)
-        private val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
-        private val tvPhone: TextView = itemView.findViewById(R.id.tvPhone)
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(restaurant: Restaurant) {
-            tvName.text = restaurant.name
-            tvPromo.text = restaurant.promotionTitle
-            tvPrice.text = restaurant.promotionPrice
-            tvPhone.text = restaurant.phone
+            with(binding) {
+                tvRestaurantName.text = restaurant.name
+                tvRestaurantAddress.text = restaurant.address
+                tvPromotion.text = restaurant.promotionTitle
+                tvPrice.text = restaurant.promotionPrice
+                tvPhone.text = restaurant.phone
 
-            itemView.setOnClickListener {
-                onItemClick(restaurant)
+                root.setOnClickListener { onItemClick(restaurant) }
             }
         }
     }

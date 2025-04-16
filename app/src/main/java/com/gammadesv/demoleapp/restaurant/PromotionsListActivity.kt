@@ -41,8 +41,10 @@ class PromotionsListActivity : AppCompatActivity() {
             }
         )
 
-        binding.rvPromotions.layoutManager = LinearLayoutManager(this)
-        binding.rvPromotions.adapter = adapter
+        with(binding) {
+            recyclerViewPromotions.layoutManager = LinearLayoutManager(this@PromotionsListActivity)
+            recyclerViewPromotions.adapter = adapter
+        }
     }
 
     private fun loadPromotions() {

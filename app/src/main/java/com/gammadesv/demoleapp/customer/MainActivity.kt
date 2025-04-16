@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.ArrayRes
 import androidx.appcompat.app.AppCompatActivity
 import com.gammadesv.demoleapp.R
 import com.gammadesv.demoleapp.databinding.ActivityMainBinding
 import com.gammadesv.demoleapp.models.SearchFilters
+import com.gammadesv.demoleapp.restaurant.auth.RestaurantAuthActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,29 +19,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initializeUI()
     }
 
     private fun initializeUI() {
-        try {
-            setupSpinners()
-            setupButtons()
-        } catch (e: Exception) {
-            handleInitializationError(e)
-        }
+        setupSpinners()
+        setupButtons()
     }
 
     private fun setupSpinners() {
-        with(binding) {
-            spinnerDepartment.adapter = createSpinnerAdapter(R.array.departments_array)
-            spinnerFoodType.adapter = createSpinnerAdapter(R.array.food_types_array)
-            spinnerPromoType.adapter = createSpinnerAdapter(R.array.promo_types_array)
-            spinnerEnvironment.adapter = createSpinnerAdapter(R.array.environments_array)
-
-            // Establecer selección por defecto
-            arrayOf(spinnerDepartment, spinnerFoodType, spinnerPromoType, spinnerEnvironment)
-                .forEach { it.setSelection(0, false) }
+        listOf(
+            binding.spinnerDepartment to R.array.departments_array,
+            binding.spinnerFoodType to R.array.food_types_array,
+            binding.spinnerPromoType to R.array.promo_types_array,
+            binding.spinnerEnvironment to R.array.environments_array
+        ).forEach { (spinner, arrayRes) ->
+            spinner.adapter = createSpinnerAdapter(arrayRes)
+            spinner.setSelection(0, false)
         }
     }
 
@@ -54,75 +50,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        binding.apply {
-            btnSearch.setOnClickListener { handleSearchClick() }
-            btnRestaurant.setOnClickListener { navigateToRestaurantAuth() }
+        binding.btnSearch.setOnClickListener { handleSearch() }
+        binding.btnRestaurant.setOnClickListener {
+            startActivity(Intent(this, RestaurantAuthActivity::class.java))
         }
     }
 
-    private fun handleSearchClick() {
-        val filters = createSearchFilters()
+    private fun handleSearch() {
+        val filters = SearchFilters(
+            department = binding.spinnerDepartment.selectedItem.toString(),
+            foodType = binding.spinnerFoodType.selectedItem.toString(),
+            promotionType = binding.spinnerPromoType.selectedItem.toString(),
+            environment = binding.spinnerEnvironment.selectedItem.toString()
+        )
 
-        if (validateFilters(filters)) {
+        if (filters.isValid()) {
             navigateToResults(filters)
         } else {
-            showValidationError()
-        }
-    }
-
-    private fun createSearchFilters(): SearchFilters {
-        return with(binding) {
-            SearchFilters(
-                department = spinnerDepartment.selectedItem?.toString().orEmpty(),
-                foodType = spinnerFoodType.selectedItem?.toString().orEmpty(),
-                promotionType = spinnerPromoType.selectedItem?.toString().orEmpty(),
-                environment = spinnerEnvironment.selectedItem?.toString().orEmpty()
-            )
-        }
-    }
-
-    private fun validateFilters(filters: SearchFilters): Boolean {
-        return with(filters) {
-            department.isNotEmpty() && department != "Seleccione" &&
-            foodType.isNotEmpty() && foodType != "Seleccione" &&
-            promotionType.isNotEmpty() && promotionType != "Seleccione" &&
-            environment.isNotEmpty() && environment != "Seleccione"
+            Toast.makeText(
+                this,
+                "Selecciona opciones válidas en todos los filtros",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
     private fun navigateToResults(filters: SearchFilters) {
-        startActivity(
-            Intent(this, ResultsActivity::class.java).apply {
-                putExtra("filters", filters)
-            }
-        )
+        Intent(this, ResultsActivity::class.java).apply {
+            putExtra("search_filters", filters)
+            startActivity(this)
+        }
     }
+}
 
-    private fun navigateToRestaurantAuth() {
-        startActivity(Intent(this, RestaurantAuthActivity::class.java))
-    }
-
-    private fun showValidationError() {
-        Toast.makeText(
-            this,
-            "Por favor selecciona opciones válidas en todos los filtros",
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
-    private fun handleInitializationError(error: Exception) {
-        error.printStackTrace()
-        Toast.makeText(
-            this,
-            "Error al inicializar la aplicación. Por favor reinicia.",
-            Toast.LENGTH_LONG
-        ).show()
-        finish()
-    }
-
-    override fun onDestroy() {
-        // Limpieza de recursos
-        binding.root.removeAllViews()
-        super.onDestroy()
+// Extensión para validación
+fun SearchFilters.isValid(): Boolean {
+    return listOf(department, foodType, promotionType, environment).all {
+        it != "Seleccione" && it.isNotEmpty()
     }
 }

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gammadesv.demoleapp.databinding.ActivityResultsBinding
 import com.gammadesv.demoleapp.adapters.PromotionAdapter
@@ -37,6 +39,7 @@ class ResultsActivity : AppCompatActivity() {
 
     private fun setupUI() {
         binding.tvSelection.text = buildSelectionTitle()
+        binding.tvSelection.setTextColor(ContextCompat.getColor(this, R.color.primary_orange))
         setupRecyclerView()
     }
 
@@ -66,6 +69,9 @@ class ResultsActivity : AppCompatActivity() {
         binding.rvResults.apply {
             layoutManager = LinearLayoutManager(this@ResultsActivity)
             adapter = this@ResultsActivity.adapter
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                setDrawable(ContextCompat.getDrawable(context, R.drawable.divider)!!)
+                })
         }
     }
 

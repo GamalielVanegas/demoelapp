@@ -28,17 +28,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        val spinnerConfigs = listOf(
-            Triple(binding.spinnerDepartment, R.array.departments_array, getString(R.string.department_label)),
-            Triple(binding.spinnerFoodType, R.array.food_types_array, getString(R.string.food_type_label)),
-            Triple(binding.spinnerPromoType, R.array.promotion_types_array, getString(R.string.promo_type_label)),
-            Triple(binding.spinnerEnvironment, R.array.environments_array, getString(R.string.environment_label))
-        )
-
-        spinnerConfigs.forEach { (spinner, arrayRes, label) ->
-            spinner.adapter = createSpinnerAdapter(arrayRes)
-            spinner.prompt = label
-            spinner.setSelection(0, false)
+        // Configuración mejorada con verificación de null safety
+        listOf(
+            binding.spinnerDepartment to R.array.departments_array,
+            binding.spinnerFoodType to R.array.food_types_array,
+            binding.spinnerPromoType to R.array.promotion_types_array,
+            binding.spinnerEnvironment to R.array.environments_array
+        ).forEach { (spinner, arrayRes) ->
+            spinner?.adapter = createSpinnerAdapter(arrayRes)
+            spinner?.setSelection(0, false)
         }
     }
 
@@ -90,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// Nueva extensión para validar al menos un filtro
+// Extensión para validación
 fun SearchFilters.hasAtLeastOneFilter(context: android.content.Context): Boolean {
     val defaultOption = context.getString(R.string.default_select_option)
     return department != defaultOption ||

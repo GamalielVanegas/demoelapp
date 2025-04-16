@@ -10,4 +10,19 @@
     <color name="green">#4CAF50</color>  <!-- Verde estándar -->
     <color name="blue">#2196F3</color>   <!-- Azul estándar -->
     <color name="gray">#808080</color>
+
+    <!-- Agrega estos nuevos colores -->
+    <color name="primary_orange">#FF6D00</color>
+    <color name="dark_orange">#E65100</color>
+    <color name="light_gray">#F5F5F5</color>
+    <color name="divider_gray">#E0E0E0</color>
+
+    <color name="light_gray_background">#FAFAFA</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+
+
+    <!-- Mantén los existentes -->
+
+    <!-- ... otros colores existentes ... -->
 </resources>

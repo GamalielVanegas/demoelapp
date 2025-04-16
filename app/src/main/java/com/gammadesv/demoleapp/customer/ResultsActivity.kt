@@ -7,8 +7,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gammadesv.demoleapp.databinding.ActivityResultsBinding
-import com.gammadesv.demoleapp.adapters.RestaurantAdapter
-import com.gammadesv.demoleapp.models.Restaurant
+import com.gammadesv.demoleapp.adapters.PromotionAdapter
+import com.gammadesv.demoleapp.models.Promotion
 import com.gammadesv.demoleapp.models.SearchFilters
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -19,7 +19,7 @@ import com.gammadesv.demoleapp.R
 class ResultsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultsBinding
-    private lateinit var adapter: RestaurantAdapter
+    private lateinit var adapter: PromotionAdapter
     private lateinit var filters: SearchFilters
 
     private val db = Firebase.firestore
@@ -32,7 +32,7 @@ class ResultsActivity : AppCompatActivity() {
         filters = intent.getParcelableExtra("search_filters") ?: SearchFilters()
 
         setupUI()
-        loadRestaurants()
+        loadPromotions()
     }
 
     private fun setupUI() {
@@ -58,9 +58,10 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = RestaurantAdapter { restaurant ->
-            openMaps(restaurant.mapUrl)
-        }
+        adapter = PromotionAdapter(
+            onEditClick = { promotion -> /* Manejar edición si es necesario */ },
+            onDeleteClick = { promotion -> /* Manejar eliminación si es necesario */ }
+        )
 
         binding.rvResults.apply {
             layoutManager = LinearLayoutManager(this@ResultsActivity)
@@ -80,8 +81,8 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadRestaurants() {
-        var query: Query = db.collection("restaurants")
+    private fun loadPromotions() {
+        var query: Query = db.collection("promotions")
 
         with(filters) {
             val defaultOption = getString(R.string.default_select_option)
@@ -93,14 +94,14 @@ class ResultsActivity : AppCompatActivity() {
 
         query.get()
             .addOnSuccessListener { documents ->
-                val restaurants = documents.toObjects(Restaurant::class.java)
-                adapter.submitList(restaurants)
-                if (restaurants.isEmpty()) {
-                    Toast.makeText(this, "No se encontraron restaurantes con esos filtros", Toast.LENGTH_SHORT).show()
+                val promotions = documents.toObjects(Promotion::class.java)
+                adapter.submitList(promotions)
+                if (promotions.isEmpty()) {
+                    Toast.makeText(this, "No se encontraron promociones con esos filtros", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error al cargar restaurantes: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al cargar promociones: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

@@ -24,6 +24,8 @@
     <string name="food_type_label">Tipo de comida</string>
     <string name="promo_type_label">Tipo de promoción</string>
     <string name="environment_label">Ambiente</string>
+    <string name="promo_schedule_format">%1$s, %2$s</string>
+    <string name="promo_price_format">$%1$s</string>
 
 
 </resources>

@@ -32,14 +32,18 @@ class PromotionAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
         private val tvTitle: TextView = itemView.findViewById(R.id.tvPromoTitle)
         private val tvType: TextView = itemView.findViewById(R.id.tvPromoType)
+        private val tvFoodType: TextView = itemView.findViewById(R.id.tvFoodType)
         private val tvSchedule: TextView = itemView.findViewById(R.id.tvPromoSchedule)
         private val tvPrice: TextView = itemView.findViewById(R.id.tvPromoPrice)
+        private val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
 
         fun bind(promotion: Promotion) {
             tvTitle.text = promotion.title
             tvType.text = promotion.promotionType
-            tvSchedule.text = "${promotion.days}, ${promotion.hours}"
-            tvPrice.text = promotion.price
+            tvFoodType.text = itemView.context.getString(R.string.food_type_prefix, promotion.foodType)
+            tvSchedule.text = itemView.context.getString(R.string.promo_schedule_format, promotion.days, promotion.hours)
+            tvPrice.text = itemView.context.getString(R.string.promo_price_format, promotion.price)
+            tvLocation.text = itemView.context.getString(R.string.location_prefix, promotion.department)
 
             itemView.findViewById<View>(R.id.btnEdit).setOnClickListener {
                 onEditClick(promotion)

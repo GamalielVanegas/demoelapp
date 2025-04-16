@@ -25,6 +25,12 @@
             android:layout_marginTop="4dp"/>
 
         <TextView
+            android:id="@+id/tvFoodType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
             android:id="@+id/tvPromoSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,6 +42,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="@color/green"/>
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,5 +1,9 @@
 package com.gammadesv.demoleapp.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Promotion(
     val id: String = "",
     val restaurantId: String = "",
@@ -12,7 +16,4 @@ data class Promotion(
     val foodType: String = "",
     val environment: String = "",
     val createdAt: Long = 0L
-) {
-    // Optional: You can add a secondary constructor if needed
-    constructor() : this("", "", "", "", "", "")
-}
+) : Parcelable

@@ -34,8 +34,8 @@ class RestaurantAdapter(
             with(binding) {
                 tvRestaurantName.text = restaurant.name
                 tvRestaurantAddress.text = restaurant.address
-                tvPromotion.text = restaurant.promotionTitle
-                tvPrice.text = restaurant.promotionPrice
+                //tvPromotion.text = restaurant.promotionTitle
+                //tvPrice.text = restaurant.promotionPrice
                 tvPhone.text = restaurant.phone
 
                 root.setOnClickListener { onItemClick(restaurant) }

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gammadesv.demoleapp.R
 import com.gammadesv.demoleapp.databinding.ActivityCreatePromotionBinding
 import com.gammadesv.demoleapp.models.Promotion
+import com.gammadesv.demoleapp.models.Restaurant // Importación añadida
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
@@ -18,7 +19,6 @@ class CreatePromotionActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    // Variables para guardar selecciones
     private var selectedDepartment: String = ""
     private var selectedFoodType: String = ""
     private var selectedPromotionType: String = ""
@@ -113,40 +113,45 @@ class CreatePromotionActivity : AppCompatActivity() {
         val hours = binding.etHours.text.toString().trim()
         val price = binding.etPrice.text.toString().trim()
 
-        // Validar campos requeridos
         if (title.isEmpty() || selectedPromotionType == getString(R.string.default_select_option)) {
             Toast.makeText(this, "Título y tipo de promoción son requeridos", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (selectedDepartment == getString(R.string.default_select_option) ||
-            selectedFoodType == getString(R.string.default_select_option) ||
-            selectedEnvironment == getString(R.string.default_select_option)) {
-            Toast.makeText(this, "Por favor seleccione todas las opciones", Toast.LENGTH_SHORT).show()
-            return
-        }
+        db.collection("restaurants").document(restaurantId).get()
+            .addOnSuccessListener { document ->
+                val restaurant = document.toObject(Restaurant::class.java) ?: run {
+                    Toast.makeText(this, "Restaurante no encontrado", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
 
-        val promotion = Promotion(
-            id = UUID.randomUUID().toString(),
-            restaurantId = restaurantId,
-            title = title,
-            promotionType = selectedPromotionType,
-            department = selectedDepartment,
-            foodType = selectedFoodType,
-            environment = selectedEnvironment,
-            days = days,
-            hours = hours,
-            price = price,
-            createdAt = System.currentTimeMillis()
-        )
+                val promotion = Promotion(
+                    id = UUID.randomUUID().toString(),
+                    restaurantId = restaurantId,
+                    restaurantName = restaurant.name,
+                    restaurantAddress = restaurant.address,
+                    title = title,
+                    promotionType = selectedPromotionType,
+                    department = selectedDepartment,
+                    foodType = selectedFoodType,
+                    environment = selectedEnvironment,
+                    days = days,
+                    hours = hours,
+                    price = price,
+                    createdAt = System.currentTimeMillis()
+                )
 
-        db.collection("promotions").add(promotion)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Promoción creada exitosamente", Toast.LENGTH_SHORT).show()
-                finish()
+                db.collection("promotions").add(promotion)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Promoción creada exitosamente", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error al crear promoción: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al crear promoción: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al obtener datos del restaurante: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
     }
 }

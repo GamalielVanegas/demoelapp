@@ -24,6 +24,18 @@
             android:textColor="@color/primary_orange"
             android:textStyle="bold"/>
 
+        <!-- Título de la promoción -->
+        <TextView
+            android:id="@+id/tvPromoTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"/>
+
+
+
         <!-- Tags de tipo -->
         <LinearLayout
             android:layout_width="match_parent"

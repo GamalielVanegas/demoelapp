@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gammadesv.demoleapp.adapters.PromotionAdapter // Importación añadida
 import com.gammadesv.demoleapp.databinding.ActivityResultsBinding
-import com.gammadesv.demoleapp.adapters.PromotionAdapter
 import com.gammadesv.demoleapp.models.Promotion
 import com.gammadesv.demoleapp.models.SearchFilters
 import com.google.firebase.firestore.ktx.firestore
@@ -32,7 +32,6 @@ class ResultsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         filters = intent.getParcelableExtra("search_filters") ?: SearchFilters()
-
         setupUI()
         loadPromotions()
     }
@@ -64,7 +63,7 @@ class ResultsActivity : AppCompatActivity() {
         adapter = PromotionAdapter(
             onEditClick = { /* No action for normal users */ },
             onDeleteClick = { /* No action for normal users */ },
-            showAdminActions = false // Aquí desactivamos los botones para usuarios normales
+            showAdminActions = false
         )
 
         binding.rvResults.apply {
@@ -72,20 +71,8 @@ class ResultsActivity : AppCompatActivity() {
             adapter = this@ResultsActivity.adapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
                 setDrawable(ContextCompat.getDrawable(context, R.drawable.divider)!!)
-                })
-        }
-    }
-
-    private fun openMaps(mapUrl: String) {
-        if (mapUrl.isNotEmpty()) {
-            try {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUrl))
-                intent.setPackage("com.google.android.apps.maps")
-                startActivity(intent)
-            } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this, "Instala Google Maps para ver la ubicación", Toast.LENGTH_SHORT).show()
-            }
-        }
+            })
+        } // Paréntesis de cierre añadido para el apply
     }
 
     private fun loadPromotions() {
@@ -110,5 +97,17 @@ class ResultsActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error al cargar promociones: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun openMaps(mapUrl: String) {
+        if (mapUrl.isNotEmpty()) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUrl))
+                intent.setPackage("com.google.android.apps.maps")
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this, "Instala Google Maps para ver la ubicación", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

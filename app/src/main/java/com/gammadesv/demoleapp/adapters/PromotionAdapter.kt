@@ -33,24 +33,24 @@ class PromotionAdapter(
         private val showAdminActions: Boolean
     ) : RecyclerView.ViewHolder(itemView) {
         private val tvRestaurantName: TextView = itemView.findViewById(R.id.tvRestaurantName)
+        private val tvPromoTitle: TextView = itemView.findViewById(R.id.tvPromoTitle)
         private val tvPromoType: TextView = itemView.findViewById(R.id.tvPromoType)
         private val tvFoodType: TextView = itemView.findViewById(R.id.tvFoodType)
         private val tvPromoSchedule: TextView = itemView.findViewById(R.id.tvPromoSchedule)
         private val tvPromoPrice: TextView = itemView.findViewById(R.id.tvPromoPrice)
         private val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
-        private val tvRestaurantAddress: TextView = itemView.findViewById(R.id.tvRestaurantAddress) // Asegúrate de tener este TextView en tu layout
+        private val tvRestaurantAddress: TextView = itemView.findViewById(R.id.tvRestaurantAddress)
         private val adminActions: View = itemView.findViewById(R.id.adminActions)
 
-
         fun bind(promotion: Promotion) {
-            tvRestaurantName.text = promotion.title
+            tvRestaurantName.text = promotion.restaurantName
+            tvPromoTitle.text = promotion.title
             tvPromoType.text = promotion.promotionType
             tvFoodType.text = promotion.foodType.toLowerCase().capitalize()
             tvPromoSchedule.text = "${promotion.days}, ${promotion.hours}"
             tvPromoPrice.text = "$${promotion.price}"
             tvLocation.text = "En ${promotion.department}"
             tvRestaurantAddress.text = promotion.restaurantAddress
-            // Versión segura con manejo de nulos
 
             adminActions.visibility = if (showAdminActions) View.VISIBLE else View.GONE
 

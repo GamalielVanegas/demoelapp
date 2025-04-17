@@ -158,7 +158,7 @@
             android:id="@+id/btnRestaurant"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="SOY RESTAURANTE O BAR"
+            android:text="QUIERO SUBIR PROMOS"
             android:textStyle="bold"
             android:textAllCaps="false"
             android:textColor="@color/black"

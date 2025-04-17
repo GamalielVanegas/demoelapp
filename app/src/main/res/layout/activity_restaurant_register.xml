@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REGISTRO DE RESTAURANTE"
+            android:text="REGISTRARME"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"/>
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Nombre del restaurante"/>
+            android:hint="Nombre del restaurante o colaborador"/>
 
         <EditText
             android:id="@+id/etAddress"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Teléfono"
+            android:hint="Teléfono (para aprobar registro)"
             android:inputType="phone"/>
 
         <EditText
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Correo electrónico"
+            android:hint="Correo electrónico (obligatorio)"
             android:inputType="textEmailAddress"/>
 
         <EditText
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Contraseña"
+            android:hint="Contraseña 6 digitos (Para la app)"
             android:inputType="textPassword"/>
 
         <EditText
@@ -89,6 +89,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Registrar restaurante"/>
+            android:text="Registrar"/>
     </LinearLayout>
 </ScrollView>

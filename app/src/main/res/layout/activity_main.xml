@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="DEMOLE"
-            android:textColor="@color/primary_orange"
+            android:textColor="@color/purple_700"
             android:textSize="28sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -26,11 +26,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BUSCA TU PROMOCIÓN"
-            android:textColor="@color/dark_orange"
-            android:textSize="18sp"
+            android:text="LA APP DE LAS PROMOCIONES"
+            android:textColor="@color/black"
+            android:textSize="20sp"
             android:gravity="center"
             android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecciona uno o varios filtros"
+            android:textColor="@color/dark_orange"
+            android:textSize="11sp"
+            android:gravity="center"
+            android:layout_marginBottom="13dp"/>
 
         <!-- Contenedor de filtros -->
         <LinearLayout
@@ -68,7 +77,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipo de comida"
+                android:text="Tipo de comida o bebida"
                 android:textColor="@color/primary_orange"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
@@ -131,9 +140,11 @@
             android:id="@+id/btnSearch"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="BUSCAR"
+            android:text="VER PROMOS"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp"
             android:backgroundTint="@color/primary_orange"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"/>

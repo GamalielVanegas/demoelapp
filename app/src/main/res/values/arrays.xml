@@ -9,6 +9,14 @@
         <item>La Libertad</item>
         <item>Sonsonate</item>
         <item>Ahuachapán</item>
+        <item>La Union</item>
+        <item>Morazan</item>
+        <item>Usulutan</item>
+        <item>Cabañas</item>
+        <item>Cuscatlan</item>
+        <item>La Paz</item>
+        <item>Ahuachapán</item>
+        <item>Chalatenango</item>
     </string-array>
 
     <string-array name="food_types_array">
@@ -21,6 +29,8 @@
         <item>Mariscos</item>
         <item>Vegetariana</item>
         <item>Vegana</item>
+        <item>Cerveza</item>
+        <item>Trago</item>
     </string-array>
 
     <string-array name="promotion_types_array">
@@ -40,6 +50,7 @@
         <item>Pet friendly</item>
         <item>Infantil</item>
         <item>Bar</item>
+        <item>Discoteca</item>
         <item>Romántico</item>
         <item>Temático</item>
         <item>Al aire libre</item>

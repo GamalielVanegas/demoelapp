@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
+    app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -15,6 +15,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Nombre del restaurante -->
         <TextView
             android:id="@+id/tvRestaurantName"
             android:layout_width="match_parent"
@@ -23,6 +24,7 @@
             android:textColor="@color/primary_orange"
             android:textStyle="bold"/>
 
+        <!-- Tags de tipo -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,36 +51,52 @@
                 android:paddingVertical="4dp"/>
         </LinearLayout>
 
+        <!-- Dirección del restaurante -->
+        <TextView
+            android:id="@+id/tvRestaurantAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+        <!-- Horario -->
         <TextView
             android:id="@+id/tvPromoSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/secondary_text"/>
 
+        <!-- Precio -->
         <TextView
             android:id="@+id/tvPromoPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:textSize="20sp"
             android:textColor="@color/primary_orange"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"/>
+            android:textStyle="bold"/>
 
+        <!-- Departamento -->
         <TextView
             android:id="@+id/tvLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/secondary_text"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"/>
 
+        <!-- Acciones de admin -->
         <LinearLayout
             android:id="@+id/adminActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
+            android:orientation="horizontal"
             android:visibility="gone">
 
             <Button
@@ -86,18 +104,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Editar"
                 android:layout_marginEnd="4dp"
-                android:backgroundTint="@color/primary_orange"/>
+                android:backgroundTint="@color/primary_orange"
+                android:text="Editar"/>
 
             <Button
                 android:id="@+id/btnDelete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Eliminar"
                 android:layout_marginStart="4dp"
-                android:backgroundTint="@color/gray"/>
+                android:backgroundTint="@color/gray"
+                android:text="Eliminar"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

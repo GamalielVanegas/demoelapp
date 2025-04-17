@@ -15,5 +15,8 @@ data class Promotion(
     val department: String = "",
     val foodType: String = "",
     val environment: String = "",
+    val restaurantAddress: String = "",  // Nuevo campo para dirección
     val createdAt: Long = 0L
+    //val restaurantId: String = "",  // Nuevo campo para referencia
+    //val restaurantAddress: String = ""  // Nuevo campo para dirección
 ) : Parcelable

@@ -38,6 +38,7 @@ class PromotionAdapter(
         private val tvPromoSchedule: TextView = itemView.findViewById(R.id.tvPromoSchedule)
         private val tvPromoPrice: TextView = itemView.findViewById(R.id.tvPromoPrice)
         private val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
+        private val tvRestaurantAddress: TextView = itemView.findViewById(R.id.tvRestaurantAddress)
         private val adminActions: View = itemView.findViewById(R.id.adminActions)
 
         fun bind(promotion: Promotion) {
@@ -47,6 +48,7 @@ class PromotionAdapter(
             tvPromoSchedule.text = "${promotion.days}, ${promotion.hours}"
             tvPromoPrice.text = "$${promotion.price}"
             tvLocation.text = "En ${promotion.department}"
+            // Versión segura con manejo de nulos
 
             adminActions.visibility = if (showAdminActions) View.VISIBLE else View.GONE
 

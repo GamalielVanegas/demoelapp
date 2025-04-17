@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="DEMOLE APP"
+            android:text="DEMOLE"
             android:textColor="@color/primary_orange"
             android:textSize="28sp"
             android:textStyle="bold"

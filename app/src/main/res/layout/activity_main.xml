@@ -36,8 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Selecciona uno o varios filtros"
+            android:textStyle="bold"
             android:textColor="@color/dark_orange"
-            android:textSize="11sp"
+            android:textSize="13sp"
             android:gravity="center"
             android:layout_marginBottom="13dp"/>
 
@@ -55,6 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Departamento"
+                android:textStyle="bold"
                 android:textColor="@color/primary_orange"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
@@ -78,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tipo de comida o bebida"
+                android:textStyle="bold"
                 android:textColor="@color/primary_orange"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
@@ -101,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tipo de promoción"
+                android:textStyle="bold"
                 android:textColor="@color/primary_orange"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
@@ -124,6 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ambiente"
+                android:textStyle="bold"
                 android:textColor="@color/primary_orange"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
@@ -153,10 +158,11 @@
             android:id="@+id/btnRestaurant"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="SOY RESTAURANTE"
+            android:text="SOY RESTAURANTE O BAR"
+            android:textStyle="bold"
             android:textAllCaps="false"
-            android:textColor="@color/primary_orange"
-            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/black"
             android:drawableLeft="@drawable/ic_restaurant"
             style="@style/BorderlessButton"/>
     </LinearLayout>

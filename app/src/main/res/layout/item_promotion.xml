@@ -102,6 +102,21 @@
             android:textSize="14sp"
             android:textColor="@color/secondary_text"/>
 
+        <!-- Agrega esto justo antes del LinearLayout de adminActions -->
+        <Button
+            android:id="@+id/btnOpenMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:text="Ver en mapa"
+            android:drawableStart="@drawable/ic_demole"
+            android:drawablePadding="8dp"
+            android:backgroundTint="@color/primary_orange"
+            android:textColor="@android:color/white"
+            android:gravity="center_vertical"/>
+
         <!-- Acciones de admin -->
         <LinearLayout
             android:id="@+id/adminActions"

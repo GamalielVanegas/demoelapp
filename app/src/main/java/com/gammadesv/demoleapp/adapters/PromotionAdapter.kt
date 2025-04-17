@@ -1,9 +1,13 @@
 package com.gammadesv.demoleapp.adapters
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +45,7 @@ class PromotionAdapter(
         private val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
         private val tvRestaurantAddress: TextView = itemView.findViewById(R.id.tvRestaurantAddress)
         private val adminActions: View = itemView.findViewById(R.id.adminActions)
+        private val btnOpenMap: Button = itemView.findViewById(R.id.btnOpenMap)
 
         fun bind(promotion: Promotion) {
             tvRestaurantName.text = promotion.restaurantName
@@ -53,6 +58,29 @@ class PromotionAdapter(
             tvRestaurantAddress.text = promotion.restaurantAddress
 
             adminActions.visibility = if (showAdminActions) View.VISIBLE else View.GONE
+
+            // Configurar el botón del mapa
+            btnOpenMap.setOnClickListener {
+                if (promotion.mapUrl.isNotEmpty()) {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(promotion.mapUrl))
+                        intent.setPackage("com.google.android.apps.maps")
+                        itemView.context.startActivity(intent)
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            itemView.context,
+                            "Instala Google Maps para ver la ubicación",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        itemView.context,
+                        "No hay mapa disponible para este lugar",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
 
             itemView.findViewById<View>(R.id.btnEdit).setOnClickListener {
                 if (showAdminActions) onEditClick(promotion)

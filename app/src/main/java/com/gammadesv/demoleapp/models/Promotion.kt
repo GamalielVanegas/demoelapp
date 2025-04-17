@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class Promotion(
     val id: String = "",
     val restaurantId: String = "",
-    val restaurantName: String = "",  // Nuevo campo
-    val restaurantAddress: String = "", // Nuevo campo
+    var restaurantName: String = "",  // Cambiado a var
+    var restaurantAddress: String = "", // Cambiado a var
     val title: String = "",
     val promotionType: String = "",
     val days: String = "",
@@ -17,5 +17,6 @@ data class Promotion(
     val department: String = "",
     val foodType: String = "",
     val environment: String = "",
+    var mapUrl: String = "", // Cambiado a var
     val createdAt: Long = 0L
 ) : Parcelable

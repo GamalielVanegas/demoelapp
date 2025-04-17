@@ -8,10 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gammadesv.demoleapp.adapters.PromotionAdapter // Importación añadida
+import com.gammadesv.demoleapp.adapters.PromotionAdapter
 import com.gammadesv.demoleapp.databinding.ActivityResultsBinding
 import com.gammadesv.demoleapp.models.Promotion
 import com.gammadesv.demoleapp.models.SearchFilters
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.widget.Toast
@@ -72,7 +73,7 @@ class ResultsActivity : AppCompatActivity() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
                 setDrawable(ContextCompat.getDrawable(context, R.drawable.divider)!!)
             })
-        } // Paréntesis de cierre añadido para el apply
+        }
     }
 
     private fun loadPromotions() {
@@ -88,26 +89,53 @@ class ResultsActivity : AppCompatActivity() {
 
         query.get()
             .addOnSuccessListener { documents ->
-                val promotions = documents.toObjects(Promotion::class.java)
-                adapter.submitList(promotions)
-                if (promotions.isEmpty()) {
-                    Toast.makeText(this, "No se encontraron promociones con esos filtros", Toast.LENGTH_SHORT).show()
+                val promotions = mutableListOf<Promotion>()
+                val restaurantIds = documents.map { it.getString("restaurantId") }.distinct()
+
+                if (restaurantIds.isEmpty()) {
+                    adapter.submitList(emptyList())
+                    return@addOnSuccessListener
                 }
+
+                db.collection("restaurants")
+                    .whereIn(FieldPath.documentId(), restaurantIds)
+                    .get()
+                    .addOnSuccessListener { restaurantDocs ->
+                        val restaurants = restaurantDocs.associateBy { it.id }
+
+                        documents.forEach { doc ->
+                            val promotionData = doc.data
+                            val restaurant = restaurants[promotionData["restaurantId"] as? String]
+
+                            val promotion = Promotion(
+                                id = doc.id,
+                                restaurantId = promotionData["restaurantId"] as? String ?: "",
+                                restaurantName = restaurant?.getString("name") ?: "",
+                                restaurantAddress = restaurant?.getString("address") ?: "",
+                                title = promotionData["title"] as? String ?: "",
+                                promotionType = promotionData["promotionType"] as? String ?: "",
+                                days = promotionData["days"] as? String ?: "",
+                                hours = promotionData["hours"] as? String ?: "",
+                                price = promotionData["price"] as? String ?: "",
+                                department = promotionData["department"] as? String ?: "",
+                                foodType = promotionData["foodType"] as? String ?: "",
+                                environment = promotionData["environment"] as? String ?: "",
+                                mapUrl = restaurant?.getString("mapUrl") ?: "",
+                                createdAt = promotionData["createdAt"] as? Long ?: 0L
+                            )
+                            promotions.add(promotion)
+                        }
+
+                        adapter.submitList(promotions)
+                        if (promotions.isEmpty()) {
+                            Toast.makeText(this, "No se encontraron promociones", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error al cargar restaurantes: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error al cargar promociones: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
-    }
-
-    private fun openMaps(mapUrl: String) {
-        if (mapUrl.isNotEmpty()) {
-            try {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUrl))
-                intent.setPackage("com.google.android.apps.maps")
-                startActivity(intent)
-            } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this, "Instala Google Maps para ver la ubicación", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-}
+    }}

@@ -1,7 +1,9 @@
 package com.gammadesv.demoleapp.adapters
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,26 +61,11 @@ class PromotionAdapter(
 
             adminActions.visibility = if (showAdminActions) View.VISIBLE else View.GONE
 
-            // Configurar el botón del mapa
             btnOpenMap.setOnClickListener {
                 if (promotion.mapUrl.isNotEmpty()) {
-                    try {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(promotion.mapUrl))
-                        intent.setPackage("com.google.android.apps.maps")
-                        itemView.context.startActivity(intent)
-                    } catch (e: Exception) {
-                        Toast.makeText(
-                            itemView.context,
-                            "Instala Google Maps para ver la ubicación",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    openMapWithFallback(promotion.mapUrl)
                 } else {
-                    Toast.makeText(
-                        itemView.context,
-                        "No hay mapa disponible para este lugar",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast("No hay mapa disponible para este lugar")
                 }
             }
 
@@ -89,6 +76,122 @@ class PromotionAdapter(
             itemView.findViewById<View>(R.id.btnDelete).setOnClickListener {
                 if (showAdminActions) onDeleteClick(promotion)
             }
+        }
+
+        private fun openMapWithFallback(mapUrl: String) {
+            try {
+                Log.d("MAP_DEBUG", "Intentando abrir URL: $mapUrl")
+
+                // Estrategia 1: Intentar con Google Maps directamente
+                if (tryOpenWithGoogleMaps(mapUrl)) {
+                    return
+                }
+
+                // Estrategia 2: Intentar con el esquema geo:
+                if (tryOpenWithGeoUri(mapUrl)) {
+                    return
+                }
+
+                // Estrategia 3: Intentar con navegador web
+                if (tryOpenWithWebBrowser(mapUrl)) {
+                    return
+                }
+
+                // Si todo falla
+                showToast("No se pudo abrir el mapa. URL: ${shortenUrlForDisplay(mapUrl)}")
+
+            } catch (e: Exception) {
+                Log.e("MAP_ERROR", "Error al abrir mapa", e)
+                showToast("Error al abrir el mapa: ${e.localizedMessage}")
+            }
+        }
+
+        private fun tryOpenWithGoogleMaps(url: String): Boolean {
+            return try {
+                val uri = Uri.parse(url)
+                val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                    setPackage("com.google.android.apps.maps")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+
+                if (intent.resolveActivity(itemView.context.packageManager) != null) {
+                    itemView.context.startActivity(intent)
+                    true
+                } else {
+                    false
+                }
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        private fun tryOpenWithGeoUri(url: String): Boolean {
+            return try {
+                // Extraer coordenadas si es una URL de Google Maps
+                val coords = extractCoordinatesFromUrl(url)
+                if (coords != null) {
+                    val geoUri = Uri.parse("geo:$coords?q=$coords")
+                    val intent = Intent(Intent.ACTION_VIEW, geoUri).apply {
+                        setPackage("com.google.android.apps.maps")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+
+                    if (intent.resolveActivity(itemView.context.packageManager) != null) {
+                        itemView.context.startActivity(intent)
+                        true
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        private fun tryOpenWithWebBrowser(url: String): Boolean {
+            return try {
+                val uri = Uri.parse(url)
+                val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    setPackage(null) // Permitir que cualquier navegador lo maneje
+                }
+
+                if (intent.resolveActivity(itemView.context.packageManager) != null) {
+                    itemView.context.startActivity(intent)
+                    true
+                } else {
+                    false
+                }
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        private fun extractCoordinatesFromUrl(url: String): String? {
+            // Patrones comunes de URLs de Google Maps
+            val patterns = listOf(
+                "q=([-+]?\\d+\\.\\d+),([-+]?\\d+\\.\\d+)",  // ?q=lat,long
+                "@(\\d+\\.\\d+),(\\d+\\.\\d+)"               // @lat,long
+            )
+
+            patterns.forEach { pattern ->
+                val regex = Regex(pattern)
+                val matchResult = regex.find(url)
+                if (matchResult != null && matchResult.groupValues.size >= 3) {
+                    return "${matchResult.groupValues[1]},${matchResult.groupValues[2]}"
+                }
+            }
+            return null
+        }
+
+        private fun shortenUrlForDisplay(url: String): String {
+            return if (url.length > 30) "${url.take(30)}..." else url
+        }
+
+        private fun showToast(message: String) {
+            Toast.makeText(itemView.context, message, Toast.LENGTH_SHORT).show()
         }
     }
 }

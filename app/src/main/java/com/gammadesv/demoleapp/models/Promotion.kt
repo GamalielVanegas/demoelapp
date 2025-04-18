@@ -17,6 +17,7 @@ data class Promotion(
     val department: String = "",
     val foodType: String = "",
     val environment: String = "",
+    val isActive: Boolean = true,
     var mapUrl: String = "", // Cambiado a var
     val createdAt: Long = 0L
 ) : Parcelable

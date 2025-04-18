@@ -30,7 +30,9 @@
         <item>Vegetariana</item>
         <item>Vegana</item>
         <item>Cerveza</item>
-        <item>Trago</item>
+        <item>Licor</item>
+        <item>Tipica</item>
+        <item>Salvadoreña</item>
     </string-array>
 
     <string-array name="promotion_types_array">

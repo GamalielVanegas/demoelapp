@@ -47,7 +47,7 @@
                 android:id="@+id/tvPromoType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/tag_background"
+                android:background="@color/amarillo_logo"
                 android:textColor="@color/black"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"/>
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/tag_background"
+                android:background="@color/amarillo_logo"
                 android:textColor="@color/black"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"/>
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
-                android:backgroundTint="@color/primary_orange"
+                android:backgroundTint="@color/amarillo_logo"
                 android:text="Editar"/>
 
             <Button

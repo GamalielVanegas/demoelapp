@@ -30,14 +30,14 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:gravity="center"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="10dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Selecciona uno o varios filtros"
             android:textStyle="bold"
-            android:textColor="@color/dark_orange"
+            android:textColor="@color/purple_500"
             android:textSize="13sp"
             android:gravity="center"
             android:layout_marginBottom="13dp"/>
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="Departamento"
                 android:textStyle="bold"
-                android:textColor="@color/primary_orange"
+                android:textColor="@color/purple_700"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
 
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tipo de comida o bebida"
                 android:textStyle="bold"
-                android:textColor="@color/primary_orange"
+                android:textColor="@color/purple_700"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
 
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tipo de promoción"
                 android:textStyle="bold"
-                android:textColor="@color/primary_orange"
+                android:textColor="@color/purple_700"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
 
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:text="Ambiente"
                 android:textStyle="bold"
-                android:textColor="@color/primary_orange"
+                android:textColor="@color/purple_700"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
 
@@ -147,10 +147,10 @@
             android:layout_height="48dp"
             android:text="VER PROMOS"
             android:textAllCaps="false"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:backgroundTint="@color/primary_orange"
+            android:backgroundTint="@color/purple_700"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"/>
 
@@ -158,12 +158,12 @@
             android:id="@+id/btnRestaurant"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="QUIERO SUBIR PROMOS"
+            android:text="QUIERO SUBIR MIS PROMOS"
             android:textStyle="bold"
             android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:backgroundTint="@color/black"
-            android:drawableLeft="@drawable/ic_restaurant"
-            style="@style/BorderlessButton"/>
+            android:textColor="@color/purple_700"
+            android:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/ic_restaurant"/>
+            <!--style="@style/BorderlessButton"/-->
     </LinearLayout>
 </ScrollView>

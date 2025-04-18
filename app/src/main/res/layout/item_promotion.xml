@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="@color/primary_orange"
+            android:textColor="@color/purple_700"
             android:textStyle="bold"/>
 
         <!-- Título de la promoción -->
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/tag_background"
-                android:textColor="@android:color/white"
+                android:textColor="@color/black"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"/>
 
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/tag_background"
-                android:textColor="@android:color/white"
+                android:textColor="@color/black"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"/>
         </LinearLayout>
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textSize="20sp"
-            android:textColor="@color/primary_orange"
+            android:textColor="@color/purple_700"
             android:textStyle="bold"/>
 
         <!-- Departamento -->
@@ -113,7 +113,7 @@
             android:text="Ver en mapa"
             android:drawableStart="@drawable/ic_demole"
             android:drawablePadding="8dp"
-            android:backgroundTint="@color/primary_orange"
+            android:backgroundTint="@color/purple_700"
             android:textColor="@android:color/white"
             android:gravity="center_vertical"/>
 

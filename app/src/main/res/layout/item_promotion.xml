@@ -111,7 +111,7 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
             android:text="Ver en mapa"
-            android:drawableStart="@drawable/ic_demole"
+
             android:drawablePadding="8dp"
             android:backgroundTint="@color/purple_700"
             android:textColor="@android:color/white"

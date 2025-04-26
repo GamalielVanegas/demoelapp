@@ -1,6 +1,7 @@
 package com.gammadesv.demoleapp.restaurant
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -105,7 +106,22 @@ class EditPromotionActivity : AppCompatActivity() {
                         editTextDays.setText(promotion.days)
                         editTextHours.setText(promotion.hours)
                         editTextPrice.setText(promotion.price)
-                        switchActive.isChecked = promotion.isActive
+
+                        // Manejo especial para el estado activo
+                        val isActive = when {
+                            document.getBoolean("isActive") != null -> document.getBoolean("isActive")!!
+                            document.getBoolean("active") != null -> document.getBoolean("active")!!
+                            else -> true
+                        }
+
+                        switchActive.isChecked = isActive
+                        Log.d("EditPromotion", "Loaded promotion active state: $isActive")
+
+                        // Actualizar variables de selección
+                        selectedDepartment = promotion.department
+                        selectedFoodType = promotion.foodType
+                        selectedPromotionType = promotion.promotionType
+                        selectedEnvironment = promotion.environment
                     }
                 }
             }
@@ -141,6 +157,8 @@ class EditPromotionActivity : AppCompatActivity() {
             val price = editTextPrice.text.toString().trim()
             val isActive = switchActive.isChecked
 
+            Log.d("EditPromotion", "Attempting to update with isActive=$isActive")
+
             // Validaciones
             if (title.isEmpty() || selectedPromotionType == getString(R.string.default_select_option)) {
                 Toast.makeText(this@EditPromotionActivity, "Título y tipo de promoción son requeridos", Toast.LENGTH_SHORT).show()
@@ -164,27 +182,23 @@ class EditPromotionActivity : AppCompatActivity() {
                 "days" to days,
                 "hours" to hours,
                 "price" to price,
-                "isActive" to isActive
+                "isActive" to isActive,
+                "active" to isActive
             )
-
-            // Agregar campo 'active' solo si existe en el documento original
-            currentPromotion?.let {
-                if (it.isActive != isActive) { // Solo si cambió el estado
-                    updates["active"] = isActive
-                }
-            }
 
             db.collection("promotions").document(promotionId)
                 .update(updates)
                 .addOnSuccessListener {
+                    Log.d("EditPromotion", "Successfully updated with isActive=$isActive")
                     Toast.makeText(
                         this@EditPromotionActivity,
-                        "Promoción actualizada con éxito",
+                        "Promoción ${if (isActive) "activada" else "desactivada"} con éxito",
                         Toast.LENGTH_SHORT
                     ).show()
                     finish()
                 }
                 .addOnFailureListener { e ->
+                    Log.e("EditPromotion", "Error updating promotion", e)
                     Toast.makeText(
                         this@EditPromotionActivity,
                         "Error al actualizar: ${e.message}",

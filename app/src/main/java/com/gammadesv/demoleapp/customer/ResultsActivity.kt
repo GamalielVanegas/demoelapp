@@ -1,6 +1,5 @@
 package com.gammadesv.demoleapp.customer
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -78,6 +77,7 @@ class ResultsActivity : AppCompatActivity() {
 
     private fun loadPromotions() {
         var query: Query = db.collection("promotions")
+            .whereEqualTo("isActive", true)
 
         with(filters) {
             val defaultOption = getString(R.string.default_select_option)
@@ -105,30 +105,35 @@ class ResultsActivity : AppCompatActivity() {
 
                         documents.forEach { doc ->
                             val promotionData = doc.data
-                            val restaurant = restaurants[promotionData["restaurantId"] as? String]
+                            val isActive = promotionData["isActive"] as? Boolean ?:
+                            (promotionData["active"] as? Boolean ?: true)
 
-                            val promotion = Promotion(
-                                id = doc.id,
-                                restaurantId = promotionData["restaurantId"] as? String ?: "",
-                                restaurantName = restaurant?.getString("name") ?: "",
-                                restaurantAddress = restaurant?.getString("address") ?: "",
-                                title = promotionData["title"] as? String ?: "",
-                                promotionType = promotionData["promotionType"] as? String ?: "",
-                                days = promotionData["days"] as? String ?: "",
-                                hours = promotionData["hours"] as? String ?: "",
-                                price = promotionData["price"] as? String ?: "",
-                                department = promotionData["department"] as? String ?: "",
-                                foodType = promotionData["foodType"] as? String ?: "",
-                                environment = promotionData["environment"] as? String ?: "",
-                                mapUrl = restaurant?.getString("mapUrl") ?: "",
-                                createdAt = promotionData["createdAt"] as? Long ?: 0L
-                            )
-                            promotions.add(promotion)
+                            if (isActive) {
+                                val restaurant = restaurants[promotionData["restaurantId"] as? String]
+                                val promotion = Promotion(
+                                    id = doc.id,
+                                    restaurantId = promotionData["restaurantId"] as? String ?: "",
+                                    restaurantName = restaurant?.getString("name") ?: "",
+                                    restaurantAddress = restaurant?.getString("address") ?: "",
+                                    title = promotionData["title"] as? String ?: "",
+                                    promotionType = promotionData["promotionType"] as? String ?: "",
+                                    days = promotionData["days"] as? String ?: "",
+                                    hours = promotionData["hours"] as? String ?: "",
+                                    price = promotionData["price"] as? String ?: "",
+                                    department = promotionData["department"] as? String ?: "",
+                                    foodType = promotionData["foodType"] as? String ?: "",
+                                    environment = promotionData["environment"] as? String ?: "",
+                                    isActive = isActive,
+                                    mapUrl = restaurant?.getString("mapUrl") ?: "",
+                                    createdAt = promotionData["createdAt"] as? Long ?: 0L
+                                )
+                                promotions.add(promotion)
+                            }
                         }
 
                         adapter.submitList(promotions)
                         if (promotions.isEmpty()) {
-                            Toast.makeText(this, "No se encontraron promociones", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "No se encontraron promociones activas", Toast.LENGTH_SHORT).show()
                         }
                     }
                     .addOnFailureListener { e ->
@@ -138,4 +143,5 @@ class ResultsActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error al cargar promociones: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
-    }}
+    }
+}

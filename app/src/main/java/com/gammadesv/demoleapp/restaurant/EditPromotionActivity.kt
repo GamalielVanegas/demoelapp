@@ -16,6 +16,7 @@ class EditPromotionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditPromotionBinding
     private lateinit var db: FirebaseFirestore
     private var promotionId: String = ""
+    private var currentPromotion: Promotion? = null
 
     // Variables para guardar selecciones
     private var selectedDepartment: String = ""
@@ -42,28 +43,24 @@ class EditPromotionActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        // Configuración Spinner de Departamento
         setupSpinner(
             spinner = binding.spinnerDepartment,
             arrayRes = R.array.departments_array,
             onItemSelected = { selectedDepartment = it }
         )
 
-        // Configuración Spinner de Tipo de Comida
         setupSpinner(
             spinner = binding.spinnerFoodType,
             arrayRes = R.array.food_types_array,
             onItemSelected = { selectedFoodType = it }
         )
 
-        // Configuración Spinner de Tipo de Promoción
         setupSpinner(
             spinner = binding.spinnerPromoType,
             arrayRes = R.array.promotion_types_array,
             onItemSelected = { selectedPromotionType = it }
         )
 
-        // Configuración Spinner de Ambiente
         setupSpinner(
             spinner = binding.spinnerEnvironment,
             arrayRes = R.array.environments_array,
@@ -97,17 +94,18 @@ class EditPromotionActivity : AppCompatActivity() {
         db.collection("promotions").document(promotionId)
             .get()
             .addOnSuccessListener { document ->
-                val promotion = document.toObject(Promotion::class.java)
-                promotion?.let {
+                currentPromotion = document.toObject(Promotion::class.java)
+                currentPromotion?.let { promotion ->
                     with(binding) {
-                        editTextTitle.setText(it.title)
-                        setSpinnerSelection(spinnerDepartment, it.department)
-                        setSpinnerSelection(spinnerFoodType, it.foodType)
-                        setSpinnerSelection(spinnerPromoType, it.promotionType)
-                        setSpinnerSelection(spinnerEnvironment, it.environment)
-                        editTextDays.setText(it.days)
-                        editTextHours.setText(it.hours)
-                        editTextPrice.setText(it.price)
+                        editTextTitle.setText(promotion.title)
+                        setSpinnerSelection(spinnerDepartment, promotion.department)
+                        setSpinnerSelection(spinnerFoodType, promotion.foodType)
+                        setSpinnerSelection(spinnerPromoType, promotion.promotionType)
+                        setSpinnerSelection(spinnerEnvironment, promotion.environment)
+                        editTextDays.setText(promotion.days)
+                        editTextHours.setText(promotion.hours)
+                        editTextPrice.setText(promotion.price)
+                        switchActive.isChecked = promotion.isActive
                     }
                 }
             }
@@ -125,7 +123,6 @@ class EditPromotionActivity : AppCompatActivity() {
                 return
             }
         }
-        // Si no encuentra el valor, establecer la selección en 0 (Seleccione)
         spinner.setSelection(0)
     }
 
@@ -142,6 +139,7 @@ class EditPromotionActivity : AppCompatActivity() {
             val days = editTextDays.text.toString().trim()
             val hours = editTextHours.text.toString().trim()
             val price = editTextPrice.text.toString().trim()
+            val isActive = switchActive.isChecked
 
             // Validaciones
             if (title.isEmpty() || selectedPromotionType == getString(R.string.default_select_option)) {
@@ -156,7 +154,8 @@ class EditPromotionActivity : AppCompatActivity() {
                 return
             }
 
-            val updates = mapOf(
+            // Crear mapa de actualizaciones
+            val updates = hashMapOf<String, Any>(
                 "title" to title,
                 "department" to selectedDepartment,
                 "foodType" to selectedFoodType,
@@ -164,8 +163,16 @@ class EditPromotionActivity : AppCompatActivity() {
                 "environment" to selectedEnvironment,
                 "days" to days,
                 "hours" to hours,
-                "price" to price
+                "price" to price,
+                "isActive" to isActive
             )
+
+            // Agregar campo 'active' solo si existe en el documento original
+            currentPromotion?.let {
+                if (it.isActive != isActive) { // Solo si cambió el estado
+                    updates["active"] = isActive
+                }
+            }
 
             db.collection("promotions").document(promotionId)
                 .update(updates)
